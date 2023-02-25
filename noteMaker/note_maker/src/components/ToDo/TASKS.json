@@ -1,0 +1,47 @@
+{
+    "tasks": [
+      {
+        "task_id": 1,
+        "task_name": "Buy groceries",
+        "due_date": "2023-02-28",
+        "priority": "High",
+        "category": "Home",
+        "status": "TODO",
+        "color":"yellow",
+        "subtasks": [
+          {
+            "subtask_id": 1,
+            "subtask_name": "Buy milk",
+            "status": "todo"
+          },
+          {
+            "subtask_id": 2,
+            "subtask_name": "Buy bread",
+            "status": "todo"
+          }
+        ]
+      },
+      {
+        "task_id": 2,
+        "task_name": "Finish project",
+        "due_date": "2023-03-15",
+        "priority": "Medium",
+        "category": "Work",
+        "status": "INPROCESS",
+        "color":"yellow",
+        "subtasks": [
+          {
+            "subtask_id": 3,
+            "subtask_name": "Write code",
+            "status": "todo"
+          },
+          {
+            "subtask_id": 4,
+            "subtask_name": "Test code",
+            "status": "todo"
+          }
+        ]
+      }
+    ]
+  }
+  

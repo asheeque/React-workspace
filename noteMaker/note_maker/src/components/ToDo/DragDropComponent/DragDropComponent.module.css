@@ -1,0 +1,24 @@
+.DragToDo {
+  background-color: rgb(215, 215, 227);
+  /* width: 50px; */
+
+}
+
+.DragInProcess {
+  background-color: rgb(188, 188, 200);
+  /* width: 50px; */
+}
+
+.DragCompleted {
+  background-color: rgb(193, 193, 213);
+  /* width: 50px; */
+}
+
+.ToDo {
+  /* width: 30%; */
+  /* background-color: blue; */
+  /* display: flex; */
+  /* width: 100%; */
+  height: 100%; 
+  vertical-align: top;
+}

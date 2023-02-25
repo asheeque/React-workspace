@@ -1,0 +1,58 @@
+.TaskWrapper {
+  margin: 20px 10px;
+}
+
+.TaskCard {
+  height: 200px;
+  width: 200px;
+  margin: 4px auto;
+  
+}
+
+.Drag {
+  box-shadow: 0 0 20px black;
+}
+
+.cardContainer {
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  height: 100%;
+  padding:8px
+}
+
+.ButtonContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+}
+
+.cardContainerInner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 88%;
+}
+
+.SubTaskContainer {
+  margin: 14px 6px 8px 6px;
+}
+
+.SubTaskWrapper {
+  height: 84px;
+  max-height: 84px;
+  overflow-y: scroll;
+  padding-top: 4px;
+}
+
+.TaskContainer {
+  margin: 2px 4px;
+}
+
+.Icons {
+  height: 20px;
+  width: 20px;
+}
+
+

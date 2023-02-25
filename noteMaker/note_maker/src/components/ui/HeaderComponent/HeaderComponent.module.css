@@ -1,0 +1,10 @@
+
+
+.HeaderOuterWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #dad9e3;
+    height: 10%;
+
+}

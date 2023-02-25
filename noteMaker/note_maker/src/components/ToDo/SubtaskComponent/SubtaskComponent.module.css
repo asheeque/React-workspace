@@ -1,0 +1,31 @@
+.SubTaskContent {
+  display: flex;
+  align-items: center;
+}
+
+.SubTaskNameWrapper {
+  flex: 3 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: small;
+  font-weight: 500;
+  font-variant: all-small-caps;
+}
+
+.SubTaskIconWrapper {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding-top: 2px;
+}
+
+.SubTaskIcon {
+  background: white;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  box-shadow: inset 0px 0px 3px 1px #d7799e;
+  border: none;
+}

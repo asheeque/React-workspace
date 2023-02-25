@@ -1,0 +1,26 @@
+.CardOuterWrapper{
+
+
+    width: 90%;
+    height: 90%;
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.ButtonsOuterWrapper{
+
+    display: flex;
+    flex-direction: row;
+    margin: 4px 6px;
+    flex: 1;
+    
+}
+
+.Button{
+
+    
+    margin: 13px !important;
+ 
+    
+}

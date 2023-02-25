@@ -1,0 +1,40 @@
+.ButtonGroupOuterWrapper{
+
+
+    padding: 10px 20px;
+    margin: 0px 40px;
+}
+
+.TextArea{
+    white-space: pre-wrap;
+
+    width: 90%;
+    height: 26px;
+    padding: 2px 10px;
+
+}
+
+.InputOuterWrapper{
+
+    display: flex;
+    height: 40%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.InputPlus{
+
+    border: none;
+    background-color: rgb(50, 206, 36);
+    margin: 2px 4px;
+    border-radius: 4px;
+    height: 32px;
+    width: 80px;
+}
+
+.InputPlus:hover{
+    cursor: pointer;
+    background-color: rgb(183, 183, 72);
+}
