@@ -1,6 +1,5 @@
 import TaskComponent from "../TaskComponent/TaskComponent";
 const TaskListComponent = ({ data, provided }) => {
-  console.log(data);
 
   return (
     <>

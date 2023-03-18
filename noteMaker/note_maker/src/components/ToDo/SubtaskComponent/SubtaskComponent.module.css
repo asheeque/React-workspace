@@ -8,9 +8,10 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  font-size: small;
+  font-size: 14px;
   font-weight: 500;
-  font-variant: all-small-caps;
+  font-family: "ROBOTO";
+  /* font-variant: all-small-caps; */
 }
 
 .SubTaskIconWrapper {

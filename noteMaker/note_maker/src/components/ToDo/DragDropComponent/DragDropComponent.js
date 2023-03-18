@@ -6,6 +6,7 @@ import { Droppable } from "react-beautiful-dnd";
 import classes from "./DragDropComponent.module.css";
 import {  useDispatch } from "react-redux";
 import { changeTaskStatus } from "../../../store/ToDo";
+import { changeTaskStatusOnDB } from "../../../services/ToDoApiService";
 
 const DragDropComponent = ({
   toDoTasks,
@@ -17,143 +18,54 @@ const DragDropComponent = ({
 }) => {
   const dispatch = useDispatch();
 
-  const transferTask = (result) => {
-    const { source, destination } = result;
-    let startTask;
-    let endTask;
-    let add;
-    if (
-      source.droppableId === "TodosList" &&
-      destination.droppableId === "inProcessList"
-    ) {
-      startTask = toDoTasks;
-      endTask = inProcessTasks;
-      add = { ...startTask[source.index] };
-      console.log(add);
-      if (Object.keys(add).length > 1) {
-        add["status"] = "INPROCESS";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      console.log(add);
-      
-      setToDoTasks(startTask);
-      setInProcessTasks(endTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"INPROCESS"}));
-    } else if (
-      source.droppableId === "TodosList" &&
-      destination.droppableId === "completedList"
-    ) {
-      startTask = toDoTasks;
-      endTask = completedTasks;
-      add = { ...startTask[source.index] };
-      if (Object.keys(add).length > 1) {
-        add["status"] = "COMPLETED";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      setToDoTasks(startTask);
-      setCompletedTasks(endTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"COMPLETED"}));
+  const changeTaskStatusAPI = (taskId, newStatus) => {
+    // Implement API call here to update the task status
+    console.log(taskId,newStatus,'aas')
+    changeTaskStatusOnDB(taskId,newStatus)
 
-    } else if (
-      source.droppableId === "inProcessList" &&
-      destination.droppableId === "TodosList"
-    ) {
-      startTask = inProcessTasks;
-      endTask = toDoTasks;
-      add = { ...startTask[source.index] };
-      if (Object.keys(add).length > 1) {
-        add["status"] = "TODO";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      setToDoTasks(endTask);
-      setInProcessTasks(startTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"TODO"}));
-    } else if (
-      source.droppableId === "inProcessList" &&
-      destination.droppableId === "completedList"
-    ) {
-      startTask = inProcessTasks;
-      endTask = completedTasks;
-      add = { ...startTask[source.index] };
-      if (Object.keys(add).length > 1) {
-        add["status"] = "COMPLETED";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      setCompletedTasks(endTask);
-      setInProcessTasks(startTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"COMPLETED"}));
+  };
 
-    } else if (
-      source.droppableId === "completedList" &&
-      destination.droppableId === "inProcessList"
-    ) {
-      startTask = completedTasks;
-      endTask = inProcessTasks;
-      add = { ...startTask[source.index] };
-      if (Object.keys(add).length > 1) {
-        add["status"] = "INPROCESS";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      setCompletedTasks(startTask);
-      setInProcessTasks(endTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"INPROCESS"}));
-    } else if (
-      source.droppableId === "completedList" &&
-      destination.droppableId === "TodosList"
-    ) {
-      startTask = completedTasks;
-      endTask = toDoTasks;
-      add = { ...startTask[source.index] };
-      if (Object.keys(add).length > 1) {
-        add["status"] = "TODO";
-      }
-      startTask.splice(source.index, 1);
-      endTask.splice(destination.index, 0, add);
-      setCompletedTasks(startTask);
-      setToDoTasks(endTask);
-      dispatch(changeTaskStatus({task_id:add.task_id,status:"TODO"}));
-    }
+  const updateTask = (source, destination) => {
+    const tasks = ["TodosList", "inProcessList", "completedList"];
+    const states = [toDoTasks, inProcessTasks, completedTasks];
+    const setStates = [setToDoTasks, setInProcessTasks, setCompletedTasks];
+    const statuses = ["TODO", "INPROCESS", "COMPLETED"];
+
+    const sourceIndex = tasks.indexOf(source.droppableId);
+    const destIndex = tasks.indexOf(destination.droppableId);
+
+    const add = { ...states[sourceIndex][source.index], status: statuses[destIndex] };
+    states[sourceIndex].splice(source.index, 1);
+    states[destIndex].splice(destination.index, 0, add);
+
+    setStates[sourceIndex](states[sourceIndex]);
+    setStates[destIndex](states[destIndex]);
+
+    dispatch(changeTaskStatus({ task_id: add.task_id, status: statuses[destIndex] }));
+    changeTaskStatusAPI(add.task_id, statuses[destIndex]);
   };
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
-    if (!destination) {
-      return;
-    }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) {
       return;
     }
 
     if (source.droppableId !== destination.droppableId) {
-      transferTask(result);
+      updateTask(source, destination);
     } else {
-      let start;
-      if (source.droppableId === "TodosList") {
-        start = toDoTasks;
-      } else if (source.droppableId === "inProcessList") {
-        start = inProcessTasks;
-      } else if (source.droppableId === "completedList") {
-        start = completedTasks;
-      }
+      const taskLists = {
+        TodosList: [toDoTasks, setToDoTasks],
+        inProcessList: [inProcessTasks, setInProcessTasks],
+        completedList: [completedTasks, setCompletedTasks],
+      };
+
+      const [start, setStart] = taskLists[source.droppableId];
       const itemToMove = start[source.index];
       start.splice(source.index, 1);
       start.splice(destination.index, 0, itemToMove);
-      if (source.droppableId === "TodosList") {
-        setToDoTasks(start);
-      } else if (source.droppableId === "inProcessList") {
-        setInProcessTasks(start);
-      } else if (source.droppableId === "completedList") {
-        setCompletedTasks(start);
-      }
+      setStart(start);
     }
   };
   return (
@@ -162,6 +74,7 @@ const DragDropComponent = ({
         {(provided, snapshot) => (
           <TableCell
             ref={provided.innerRef}
+            align="center"
             {...provided.droppableProps}
             className={`${classes.ToDo} ${
               snapshot.isDraggingOver ? classes.DragToDo : ""

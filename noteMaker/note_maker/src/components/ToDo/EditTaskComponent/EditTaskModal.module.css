@@ -1,0 +1,54 @@
+.DialogWrapper {
+  width: 70%;
+}
+
+.DialogContentInner {
+  display: flex;
+  justify-content: space-between;
+}
+.ColorWrapper {
+  margin: 20px 4px;
+  width: 14%;
+}
+
+.CategoryWrapper {
+  margin: 20px 4px;
+  width: 22%;
+}
+
+
+.TaskCard {
+    /* background: #fff740; */
+    height: 20px;
+    width: 20px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    border-radius: 50%;
+  }
+  
+  .SelectWrapperInner{
+  height: 58px;
+  
+  }
+
+  .SubtaskButton{
+    margin: 10px 6px;
+    color: #666667;
+    border: 1px solid #666667;
+  }
+
+  .NewSubtaskOuter{
+    display: flex;
+  }
+
+
+  .NewSubtaskInner{
+    width: 80%;
+  }
+
+.SubtaskList{
+    display: flex;
+}
+  

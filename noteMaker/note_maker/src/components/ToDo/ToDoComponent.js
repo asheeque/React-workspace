@@ -11,17 +11,27 @@ import { useEffect, useState } from "react";
 import AddTaskComponent from "./AddTaskComponent/AddTaskComponent";
 import DragDropComponent from "./DragDropComponent/DragDropComponent";
 import { useSelector, useDispatch } from "react-redux";
-import data from "./TASKS.json";
+// import data from "./TASKS.json";
 import { fetch_initial_data } from "../../store/ToDo";
+import { fetchUserTasks } from "../../services/ToDoApiService";
 
 const ToDoComponent = () => {
   const dispatch = useDispatch();
   
   const DATA = useSelector((state) => state.todo.tasks);
+  const authData = useSelector((state) => state.auth);
   const [tasks, setTasks] = useState(DATA);
-  useEffect(() =>{
-    dispatch(fetch_initial_data(data));
 
+
+  const fetchTasks = async () => {
+    const data = await fetchUserTasks();
+    // console.log(data)
+    dispatch(fetch_initial_data(data));
+  };
+
+  useEffect(() =>{
+    // dispatch(fetch_initial_data(data));
+    fetchTasks()
   },[])
 
   
@@ -31,7 +41,6 @@ const ToDoComponent = () => {
     { id: "done", label: "Done", minWidth: 170, align: "center" },
   ];
   
-  console.log(tasks,'taksss')
   const [toDoTasks, setToDoTasks] = useState([]);
   const [inProcessTasks, setInProcessTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
@@ -64,7 +73,9 @@ const ToDoComponent = () => {
 
   return (
     <Paper sx={{ width: "100%", height: "90%",boxShadow:"none" }}>
+      {/* <div>Hi {authData.username}</div> */}
       <AddTaskComponent addDataHandler={addToDoHandler} />
+      
       <TableContainer sx={{ height: "90%" }}>
         <Table
           stickyHeader

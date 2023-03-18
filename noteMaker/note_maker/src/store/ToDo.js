@@ -22,7 +22,7 @@ const todoSlice = createSlice({
       const taskIndex = state.tasks.findIndex(
         (task) => task.task_id === taskId
       );
-      state.tasks[taskIndex].subtasks.push(...subTask);
+      state.tasks[taskIndex].subtasks.push(subTask);
     },
     deleteTask(state, action) {
       const taskIndex = state.tasks.findIndex(
@@ -50,6 +50,18 @@ const todoSlice = createSlice({
         }
       }
     },
+    changeSubtaskStatus: (state, action) => {
+      const { task_id, subtask_id, status } = action.payload;
+       
+      const taskIndex = state.tasks.findIndex((task) => task.task_id === task_id);
+      if (taskIndex !== -1) {
+        const subtaskIndex = state.tasks[taskIndex].subtasks.findIndex((subtask) => subtask.subtask_id === subtask_id);
+        if (subtaskIndex !== -1) {
+          state.tasks[taskIndex].subtasks[subtaskIndex].status = status;
+          //  console.log(state.tasks[taskIndex].subtasks)
+        }
+      }
+    },
     
   },
 });
@@ -60,7 +72,8 @@ export const {
   addSubtask,
   deleteTask,
   changeTaskStatus,
-  deleteSubtask
+  deleteSubtask,
+  changeSubtaskStatus
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

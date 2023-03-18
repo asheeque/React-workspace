@@ -24,12 +24,24 @@
   padding: 2px 24px;
   font-size: x-large;
   font-family: sans-serif; */
+  
+  height: 56px;
 }
 
 .SelectWrapper {
-  width: 4%;
+  width: 6%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin: 2px 2px 2px 4px;
+}
+
+
+.CategoryWrapper {
+  width: 8%;
+  display: flex;
+  align-items: center;
+  margin: 2px 2px 2px 4px;
   justify-content: center;
 }
 
@@ -72,4 +84,9 @@
   margin-right: auto;
   margin-top: 10px;
   border-radius: 50%;
+}
+
+.SelectWrapperInner{
+height: 58px;
+
 }

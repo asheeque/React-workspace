@@ -12,12 +12,12 @@
           {
             "subtask_id": 1,
             "subtask_name": "Buy milk",
-            "status": "todo"
+            "status": true
           },
           {
             "subtask_id": 2,
             "subtask_name": "Buy bread",
-            "status": "todo"
+            "status": false
           }
         ]
       },
@@ -33,12 +33,12 @@
           {
             "subtask_id": 3,
             "subtask_name": "Write code",
-            "status": "todo"
+            "status": false
           },
           {
             "subtask_id": 4,
             "subtask_name": "Test code",
-            "status": "todo"
+            "status": false
           }
         ]
       }

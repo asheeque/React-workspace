@@ -3,10 +3,17 @@
 }
 
 .TaskCard {
-  height: 200px;
-  width: 200px;
+  height: 250px;
+  width: 100%; /* Mobile */
   margin: 4px auto;
-  
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(15.5px);
+}
+
+@media (min-width: 768px) {
+  .TaskCard {
+    width: 66%; /* Desktop */
+  }
 }
 
 .Drag {
@@ -18,14 +25,25 @@
   /* justify-content: center;
   align-items: center; */
   height: 100%;
-  padding:8px
+  padding: 8px;
 }
 
 .ButtonContainer {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    display: flex;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  bottom: -18px;
+  right: -4px;
+}
+
+.Button {
+  color: #fefbef;
+  border-color: #fefbef;
+}
+
+.Button:hover{
+  border:1px solid #a09ca9 !important;
 }
 
 .cardContainerInner {
@@ -36,7 +54,7 @@
 }
 
 .SubTaskContainer {
-  margin: 14px 6px 8px 6px;
+  margin: 2px 14px 8px 14px;
 }
 
 .SubTaskWrapper {
@@ -55,4 +73,71 @@
   width: 20px;
 }
 
+.CardHeader {
+  display: flex;
+  justify-content: flex-start;
+  padding: 2px 12px;
+  font-family: "Lato";
+  font-weight: 600;
+  font-size: 22px;
+}
 
+@media (max-width: 1199px) {
+  .CardHeader {
+    font-size: 20x;
+  }
+}
+
+@media (max-width: 991px) {
+  .CardHeader {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .CardHeader {
+    font-size: 16px;
+  }
+}
+
+.DueDateOuter {
+  display: flex;
+  padding: 12px 12px 2px 12px;
+  flex-direction: column;
+}
+.DueDateOuterInner {
+  display: flex;
+  justify-content: flex-end;
+}
+.Chip {
+  background: #050404;
+  height: 18px;
+  font-size: 10px;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px 0 rgb(31 38 126 / 37%);
+  backdrop-filter: blur(15.5px);
+}
+
+.ChipCategory {
+  background: #ebdede;
+  height: 18px;
+  font-size: 10px;
+  color: #0a0a0a;
+  border: none;
+  box-shadow: 0 2px 8px 0 rgb(18 20 114 / 37%);
+  backdrop-filter: blur(15.5px);
+}
+
+.SubtaskList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+.SubtaskList li {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
