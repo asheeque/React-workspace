@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./components/Authentication/Login";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Register from "./components/Authentication/Register";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           {
             <Routes>
               <Route path="/" element={<ToDoComponent />} />
+              <Route path="/signup" element={<Register />} />
               <Route path="/login" element={<Login />} />
+
               {/*<Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} /> */}
             </Routes>

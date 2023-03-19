@@ -1,52 +1,60 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useReducer } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import classes from "../Authentication/Login.module.css";
+import classes from "../Authentication/Register.module.css";
 import { login } from "../../store/Auth";
+import { registerUser } from "../../services/AuthApiService";
+
 const formReducer = (state, action) => {
   switch (action.type) {
     case "SET_USERNAME":
       return { ...state, username: action.payload };
     case "SET_PASSWORD":
       return { ...state, password: action.payload };
+    case "SET_EMAIL":
+      return { ...state, email: action.payload };
     default:
       return state;
   }
 };
 
-const Login = () => {
-  const dispatchLogin = useDispatch();
+const Register = () => {
   const navigate = useNavigate();
 
-
+  const dispatchLogin = useDispatch()
   const [formState, dispatch] = useReducer(formReducer, {
     username: "",
     password: "",
+    email: "",
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (
+      formState.username.trim() === "" ||
+      formState.password.trim() === "" ||
+      formState.email.trim() === ""
+    ) {
+      return;
+    }
 
-    const response = await fetch("http://localhost:8080/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: formState.username,
-        password: formState.password,
-      }),
-    });
+    const body = {
+      username: formState.username,
+      password: formState.password,
+      email: formState.email,
+      role: ["ROLE_USER"],
+    };
+    const response = await registerUser(body)
 
-    const data = await response.json();
-    if (response.ok) {
-      dispatchLogin(login(data));
-      const email = data.email;
-      const username = data.username;
-      const token = data.token;
-      const id = data.id;
-      const roles = data.roles;
+    if (response) {
+
+      dispatchLogin(login(response));
+      const email = response.email;
+      const username = response.username;
+      const token = response.token;
+      const id = response.id;
+      const roles = response.roles;
       localStorage.setItem("EMAIL", email);
       localStorage.setItem("TOKEN", token);
       localStorage.setItem("USERNAME", username);
@@ -54,7 +62,7 @@ const Login = () => {
       localStorage.setItem("ROLES", JSON.stringify(roles));
       navigate("/");
     } else {
-      console.error("Login failed:", data);
+      console.error("Login failed:");
     }
   };
 
@@ -62,13 +70,13 @@ const Login = () => {
     <div className={classes.LoginOuter}>
       <div className={classes.LoginInner}>
         <div className={classes.HeaderOuter}>
-          <h1>Login</h1>
+          <h1>Register</h1>
         </div>
         <form onSubmit={handleSubmit}>
           <div className={classes.InputerOuter}>
             <div>
               <TextField
-                id="outlined-basic"
+                id="outlined-basic1"
                 label="Username"
                 variant="outlined"
                 size="small"
@@ -86,7 +94,26 @@ const Login = () => {
           <div className={classes.InputerOuter}>
             <div>
               <TextField
-                id="outlined-basic"
+                id="outlined-basic2"
+                label="Email"
+                type="email"
+                variant="outlined"
+                size="small"
+                required
+                value={formState.email}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_EMAIL",
+                    payload: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+          <div className={classes.InputerOuter}>
+            <div>
+              <TextField
+                id="outlined-basic3"
                 label="Password"
                 type="password"
                 variant="outlined"
@@ -104,8 +131,9 @@ const Login = () => {
           </div>
           <div className={classes.ButtonOuter}>
             <div>
-            
-              <Button variant="outlined"  type="submit">Login</Button>
+              <button className={classes.Button} type="submit">
+                Register
+              </button>
             </div>
           </div>
         </form>
@@ -114,4 +142,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

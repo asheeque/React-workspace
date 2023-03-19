@@ -21,8 +21,21 @@ import { parseISO } from "date-fns";
 import classes from "./EditTaskModal.module.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import AddIcon from "@mui/icons-material/Add";
-import { addSubTaskToDB } from "../../../services/ToDoApiService";
-import { addSubtask, changeSubtaskStatus } from "../../../store/ToDo";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import {
+  addSubTaskToDB,
+  changeSubtaskStatusOnDB,
+  deleteSubtaskFromDB,
+  deleteTaskFromDB,
+  updateUserTask,
+} from "../../../services/ToDoApiService";
+import {
+  addSubtask,
+  changeSubtaskStatus,
+  deleteSubtask,
+  deleteTask,
+  updateTaskDetails,
+} from "../../../store/ToDo";
 import { useDispatch } from "react-redux";
 
 const EditTaskModal = (props) => {
@@ -67,7 +80,54 @@ const EditTaskModal = (props) => {
     },
   ];
 
-  const handleChange = (newStatus, id, value) => {
+  const buttonSaveHandler = async () => {
+    if (taskName.trim() === "") return;
+
+    // console.log(Math.random() * 100)
+
+    let newTask = {
+      task_name: taskName.trim(),
+      due_date: dueDate,
+      category: category,
+      color: color,
+      //   subtasks: [],
+    };
+    console.log(newTask);
+
+    const updatedTask = await updateUserTask(task.task_id, newTask);
+    const dueDateString = dueDate.toISOString();
+    if (updatedTask) {
+      const payload = {
+        task_id: task.task_id,
+        name: taskName.trim(),
+        color: color,
+        due_date: dueDateString,
+        category: category,
+      };
+      dispatch(updateTaskDetails(payload));
+      // dispatch(updateTaskDetails(payload))
+    }
+    handleSave();
+    // if (addTaskToDB) {
+    //   const task_id = addTaskToDB["Task"]["id"];
+    //   newTask["task_id"] = task_id;
+
+    //   console.log(addTaskToDB, "mewo");
+    //   dispatch(addTask(newTask));
+    //   setCurrentTask("");
+    // }
+  };
+
+  const taskDeleteHandler = () => {
+    const payload = {
+      task_id: task.task_id,
+    };
+
+    deleteTaskFromDB(task.task_id);
+    dispatch(deleteTask(payload));
+  };
+
+  const handleChange = async (newStatus, id, value) => {
     // const newStatus = e.target.value;
     // console.log(value);/
     // setStatus(newStatus);
@@ -76,9 +136,12 @@ const EditTaskModal = (props) => {
       subtask_id: id,
       status: newStatus,
     };
-    console.log(payload)
-    
-    dispatch(changeSubtaskStatus(payload));
+    console.log(payload);
+    const response = await changeSubtaskStatusOnDB(id, newStatus);
+
+    if (response) {
+      dispatch(changeSubtaskStatus(payload));
+    }
   };
   const handleTaskNameChange = (event) => {
     setTaskName(event.target.value);
@@ -93,12 +156,8 @@ const EditTaskModal = (props) => {
     setDueDate(date);
   };
 
-  const handleSaveClick = () => {
-    handleSave({ taskName, subtasks, color, dueDate });
-  };
-
   const subtaskSaveHandler = async () => {
-    if (newSubtask.trim() == "") {
+    if (newSubtask.trim() === "") {
       return;
     }
 
@@ -123,6 +182,22 @@ const EditTaskModal = (props) => {
       };
       dispatch(addSubtask(payload));
     }
+  };
+
+  const subtaskDeleteHandler = async (subtaskId) => {
+    console.log(subtaskId);
+    const response = await deleteSubtaskFromDB(subtaskId);
+    // task_id, subtask_id
+
+    if (response) {
+      const obj = {
+        task_id: task.task_id,
+        subtask_id: subtaskId,
+      };
+      dispatch(deleteSubtask(obj));
+    }
+
+    // dispatch(subtaskDeleteHandler(sub))
   };
 
   const handleSubtasksChange = (e) => {
@@ -240,11 +315,12 @@ const EditTaskModal = (props) => {
         <List
           sx={{
             width: "100%",
-            maxWidth: 360,
-            bgcolor: "#a5bde354",
+
+            bgcolor: "#e1e5eb54",
             position: "relative",
             overflow: "auto",
             maxHeight: 250,
+            minHeight: 180,
             "& ul": { padding: 0 },
             borderRadius: "4px",
           }}
@@ -252,27 +328,43 @@ const EditTaskModal = (props) => {
         >
           {subtasks.map((value, index) => (
             <div className={classes.SubtaskList} key={index}>
-              <ListItem>
-                <ListItemText primary={value.subtask_name} />
-              </ListItem>
-              <Checkbox
-                edge="start"
-                checked={value.status}
-                // tabIndex={-1}
-                // disableRipple
-                onChange={() =>
-                  handleChange(!value.status, value.subtask_id, value)
-                }
-                inputProps={{ "aria-label": "controlled" }}
-              />
+              <div className={classes.SubtaskListNames}>
+                <ListItem>
+                  <ListItemText primary={value.subtask_name} />
+                </ListItem>
+              </div>
+              <div className={classes.SubtaskListCheckbox}>
+                <Checkbox
+                  edge="start"
+                  checked={value.status}
+                  // tabIndex={-1}
+                  // disableRipple
+                  onChange={() =>
+                    handleChange(!value.status, value.subtask_id, value)
+                  }
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              </div>
+              <div className={classes.SubtaskListDelete}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  className={classes.DeleteButton}
+                  onClick={() => subtaskDeleteHandler(value.subtask_id)}
+                >
+                  <DeleteOutlineIcon className={classes.ButtonIcon} />
+                </Button>
+              </div>
             </div>
           ))}
         </List>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSaveClick}>Save</Button>
+        
+        <Button variant="outlined" onClick={handleClose}>Cancel</Button>
+        <Button variant="outlined" onClick={buttonSaveHandler} color="success">Save</Button>
+        <Button onClick={taskDeleteHandler} variant="outlined" color="warning">Delete</Button>
       </DialogActions>
     </Dialog>
   );

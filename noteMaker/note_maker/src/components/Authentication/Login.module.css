@@ -6,7 +6,7 @@
 }
 
 .LoginInner {
-  border: black solid 1px;
+  border: none;
   padding: 50px 20px;
   background: white;
   border-radius: 8px;
@@ -35,7 +35,7 @@
 }
 
 .ButtonOuter{
-    height: 20%;
+    height: 36%;
     display: flex;
     justify-content: center;
     align-items: center;

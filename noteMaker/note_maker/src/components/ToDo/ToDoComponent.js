@@ -19,20 +19,21 @@ const ToDoComponent = () => {
   const dispatch = useDispatch();
   
   const DATA = useSelector((state) => state.todo.tasks);
-  const authData = useSelector((state) => state.auth);
   const [tasks, setTasks] = useState(DATA);
 
 
-  const fetchTasks = async () => {
-    const data = await fetchUserTasks();
-    // console.log(data)
-    dispatch(fetch_initial_data(data));
-  };
+  
 
   useEffect(() =>{
     // dispatch(fetch_initial_data(data));
+
+    const fetchTasks = async () => {
+      const data = await fetchUserTasks();
+      // console.log(data)
+      dispatch(fetch_initial_data(data));
+    };
     fetchTasks()
-  },[])
+  },[dispatch])
 
   
   const columns = [

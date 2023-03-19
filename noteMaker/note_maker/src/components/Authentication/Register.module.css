@@ -1,0 +1,61 @@
+.LoginOuter {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .LoginInner {
+    border: none;
+    padding: 50px 20px;
+    background: white;
+    border-radius: 8px;
+    height: 36%;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    width: 22%;
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  
+  }
+  
+  
+  .HeaderOuter{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+  }
+  
+  .InputerOuter{
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 10px;
+  }
+  
+  .ButtonOuter{
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .Button{
+  
+      background: #ffffff;
+      color: #4a90e2;
+      padding: 10px 34px;
+      font-weight: 800;
+      border: 1px solid #4a90e2;
+      border-radius: 4px;
+  }
+
+  .Button:hover{
+  
+    background: #ffffff;
+    cursor: pointer;
+    border: 1px solid #276ec0;
+    color: #276ec0;
+  
+}

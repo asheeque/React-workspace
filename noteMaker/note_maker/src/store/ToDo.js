@@ -38,31 +38,57 @@ const todoSlice = createSlice({
       if (taskIndex !== -1) {
         state.tasks[taskIndex].status = status;
       }
-      
     },
     deleteSubtask: (state, action) => {
       const { task_id, subtask_id } = action.payload;
-      const taskIndex = state.tasks.findIndex((task) => task.task_id === task_id);
+      const taskIndex = state.tasks.findIndex(
+        (task) => task.task_id === task_id
+      );
       if (taskIndex !== -1) {
-        const subtaskIndex = state.tasks[taskIndex].subtasks.findIndex((subtask) => subtask.subtask_id === subtask_id);
+        const subtaskIndex = state.tasks[taskIndex].subtasks.findIndex(
+          (subtask) => subtask.subtask_id === subtask_id
+        );
         if (subtaskIndex !== -1) {
           state.tasks[taskIndex].subtasks.splice(subtaskIndex, 1);
         }
       }
     },
+    updateTaskDetails(state, action) {
+      const { task_id, name, color, due_date, category } = action.payload;
+      const taskIndex = state.tasks.findIndex(
+        (task) => task.task_id === task_id
+      );
+      if (taskIndex !== -1) {
+        if (name) {
+          state.tasks[taskIndex].task_name = name;
+        }
+        if (color) {
+          state.tasks[taskIndex].color = color;
+        }
+        if (due_date) {
+          state.tasks[taskIndex].due_date = due_date;
+        }
+        if (category) {
+          state.tasks[taskIndex].category = category;
+        }
+      }
+    },
+
     changeSubtaskStatus: (state, action) => {
       const { task_id, subtask_id, status } = action.payload;
-       
-      const taskIndex = state.tasks.findIndex((task) => task.task_id === task_id);
+      const taskIndex = state.tasks.findIndex(
+        (task) => task.task_id === task_id
+      );
       if (taskIndex !== -1) {
-        const subtaskIndex = state.tasks[taskIndex].subtasks.findIndex((subtask) => subtask.subtask_id === subtask_id);
+        const subtaskIndex = state.tasks[taskIndex].subtasks.findIndex(
+          (subtask) => subtask.subtask_id === subtask_id
+        );
         if (subtaskIndex !== -1) {
           state.tasks[taskIndex].subtasks[subtaskIndex].status = status;
           //  console.log(state.tasks[taskIndex].subtasks)
         }
       }
     },
-    
   },
 });
 
@@ -73,7 +99,8 @@ export const {
   deleteTask,
   changeTaskStatus,
   deleteSubtask,
-  changeSubtaskStatus
+  changeSubtaskStatus,
+  updateTaskDetails,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

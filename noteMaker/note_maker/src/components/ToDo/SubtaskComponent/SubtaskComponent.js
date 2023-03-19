@@ -1,10 +1,10 @@
 import classes from "./SubtaskComponent.module.css";
 
-import RemoveIcon from "@mui/icons-material/Remove";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { deleteSubtask, changeSubtaskStatus } from "../../../store/ToDo";
+import { changeSubtaskStatus } from "../../../store/ToDo";
+import { changeSubtaskStatusOnDB } from "../../../services/ToDoApiService";
 
 const SubtaskComponent = ({ subtask, task, task_id }) => {
   const Capitalize = (str) => {
@@ -12,15 +12,13 @@ const SubtaskComponent = ({ subtask, task, task_id }) => {
   };
   const dispatch = useDispatch();
   const [status, setStatus] = useState(subtask.status);
-  const removeTaskHandler = () => {
-    let payload = {
-      task_id: task_id,
-      subtask_id: subtask.subtask_id,
-    };
-    dispatch(deleteSubtask(payload));
-  };
 
-  const changeSubtaskStatusHandler = () => {
+  useEffect(() => {
+    setStatus(subtask.status);
+  }, [subtask.status]);
+  // console.log(task,subtask.status)
+
+  const changeSubtaskStatusHandler = async () => {
     const newStatus = !status;
     setStatus(newStatus);
     let payload = {
@@ -28,7 +26,13 @@ const SubtaskComponent = ({ subtask, task, task_id }) => {
       subtask_id: subtask.subtask_id,
       status: newStatus,
     };
-    dispatch(changeSubtaskStatus(payload));
+    const response = await changeSubtaskStatusOnDB(
+      subtask.subtask_id,
+      newStatus
+    );
+    if (response) {
+      dispatch(changeSubtaskStatus(payload));
+    }
   };
 
   return (
@@ -36,7 +40,9 @@ const SubtaskComponent = ({ subtask, task, task_id }) => {
       {/* <div className={classes.SubTaskIconWrapper} onClick={removeTaskHandler}>
         <RemoveIcon className={classes.SubTaskIcon} />
       </div> */}
-      <div className={classes.SubTaskNameWrapper}>{Capitalize(subtask.subtask_name)}</div>
+      <div className={classes.SubTaskNameWrapper}>
+        {Capitalize(subtask.subtask_name)}
+      </div>
       <div style={{ flex: "2" }}>
         <input
           type="checkbox"

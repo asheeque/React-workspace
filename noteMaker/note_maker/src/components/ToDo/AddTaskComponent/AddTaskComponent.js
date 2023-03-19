@@ -71,10 +71,11 @@ const AddTaskComponent = ({ addDataHandler }) => {
 
     const addTaskToDB = await addUserTask(newTask);
     if (addTaskToDB) {
+      console.log(addTaskToDB, "mewo");
       const task_id = addTaskToDB["Task"]["id"];
       newTask["task_id"] = task_id;
-
-      console.log(addTaskToDB, "mewo");
+      newTask["due_date"] = addTaskToDB["Task"]["due_date"]
+      
       dispatch(addTask(newTask));
       setCurrentTask("");
     }

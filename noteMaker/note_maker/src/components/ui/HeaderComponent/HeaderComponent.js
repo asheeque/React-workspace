@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { json, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classes from "./HeaderComponent.module.css";
 import { logout } from "../../../store/Auth";
 import { useEffect, useState } from "react";
@@ -24,31 +24,37 @@ const HeaderComponent = () => {
     navigate("/login");
   };
 
+  const Capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   useEffect(() => {
     const USERNAME = localStorage.getItem("USERNAME");
-    const TOKEN = localStorage.getItem("TOKEN");
-    const ID = localStorage.getItem("ID");
-    const ROLES = localStorage.getItem("ROLES");
-    const EMAIL = localStorage.getItem("EMAIL");
+    if (USERNAME) {
+      const TOKEN = localStorage.getItem("TOKEN");
+      const ID = localStorage.getItem("ID");
+      const ROLES = localStorage.getItem("ROLES");
+      const EMAIL = localStorage.getItem("EMAIL");
 
-    const data = {
-      email: EMAIL,
-      username: USERNAME,
-      token: TOKEN,
-      id: ID,
-      roles: JSON.parse(ROLES),
-    };
-    dispatch(login(data));
-    console.log(data, "USSS");
-  }, []);
+      const data = {
+        email: EMAIL,
+        username: USERNAME,
+        token: TOKEN,
+        id: ID,
+        roles: JSON.parse(ROLES),
+      };
+      dispatch(login(data));
+    //   console.log(data, "USSS");
+    }
+  }, [dispatch]);
 
   return (
     <div className={classes.HeaderOuterWrapper}>
       <nav className={classes.NavWrapper}>
         <div>
-          {authData.isLoggedIn && (
+          {!!authData.isLoggedIn && (
             <Link to="/" className={classes.HeaderLink}>
-              Hi {authData?.username}
+              Hi {Capitalize(authData?.username)}
             </Link>
           )}
           {!authData.isLoggedIn && (
@@ -65,7 +71,7 @@ const HeaderComponent = () => {
           </div>
         )} */}
 
-        {isLoggedIn && (
+        {!!isLoggedIn && (
           <div>
             <button className={classes.LogoutButton} onClick={onLogout}>
               Logout
